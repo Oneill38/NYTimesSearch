@@ -1,5 +1,6 @@
-package com.example.meganoneill.nytimessearch;
+package com.example.meganoneill.nytimessearch.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -7,10 +8,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 
+import com.example.meganoneill.nytimessearch.Article;
+import com.example.meganoneill.nytimessearch.ArticleArrayAdapter;
+import com.example.meganoneill.nytimessearch.R;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -47,6 +52,19 @@ public class SearchActivity extends AppCompatActivity {
         articles = new ArrayList<>();
         adapter = new ArticleArrayAdapter(this, articles);
         gvResults.setAdapter(adapter);
+
+        gvResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(getApplicationContext(), ArticleActivity.class);
+
+                Article article = articles.get(position);
+
+                i.putExtra("article", article);
+
+                startActivity(i);
+            }
+        });
     }
 
     @Override
