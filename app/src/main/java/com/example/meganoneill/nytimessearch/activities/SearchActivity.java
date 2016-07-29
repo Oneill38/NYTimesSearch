@@ -51,8 +51,8 @@ public class SearchActivity extends AppCompatActivity {
 
     private void showFilterFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        FilterFragment filterFragment = FilterFragment.newInstance("Some Title");
-        filterFragment.show(fm, "fragment_edit_name");
+        FilterFragment searchFilterDialog = new FilterFragment();
+        searchFilterDialog.show(fm, "filter_fragment");
     }
 
     public void setupViews(){

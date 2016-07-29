@@ -4,13 +4,60 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/lbl_your_name" android:text="Your name"
-        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+        android:id="@+id/tvStartDate"
+        android:text="Start Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
 
     <EditText
-        android:id="@+id/txt_your_name"
-        android:layout_width="match_parent"  android:layout_height="wrap_content"
-        android:inputType="text"
-        android:imeOptions="actionDone" />
+        android:id="@+id/etStartDate"
+        android:inputType="date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+     />
+
+    <TextView
+        android:id="@+id/tvSort"
+        android:text="Sort Order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spSort"
+    />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTypes"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbFashion"
+        android:text="Fashion and Style"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbArts"
+        android:text="Arts"
+        />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/cbSports"
+        android:text="Sports"
+        />
+
+
+
 
 </LinearLayout>
