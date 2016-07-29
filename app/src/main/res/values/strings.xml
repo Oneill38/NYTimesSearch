@@ -4,4 +4,5 @@
     <string name="hint">Enter Search Query</string>
     <string name="search">Search</string>
     <string name="title_activity_article">ArticleActivity</string>
+    <string name="icon_ellipsis">&#xf142;</string>
 </resources>

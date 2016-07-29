@@ -2,6 +2,7 @@ package com.example.meganoneill.nytimessearch.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -18,6 +19,7 @@ import android.widget.GridView;
 import com.example.meganoneill.nytimessearch.Article;
 import com.example.meganoneill.nytimessearch.ArticleArrayAdapter;
 import com.example.meganoneill.nytimessearch.R;
+import com.example.meganoneill.nytimessearch.fragments.FilterFragment;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -45,6 +47,12 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupViews();
+    }
+
+    private void showFilterFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        FilterFragment filterFragment = FilterFragment.newInstance("Some Title");
+        filterFragment.show(fm, "fragment_edit_name");
     }
 
     public void setupViews(){
@@ -91,6 +99,7 @@ public class SearchActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         return true;
     }
 
@@ -103,6 +112,11 @@ public class SearchActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+
+        if (id == R.id.btnFilter){
+            showFilterFragment();
             return true;
         }
 
