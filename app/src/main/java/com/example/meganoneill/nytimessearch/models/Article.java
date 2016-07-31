@@ -1,4 +1,4 @@
-package com.example.meganoneill.nytimessearch;
+package com.example.meganoneill.nytimessearch.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -12,14 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 
-import com.example.meganoneill.nytimessearch.Article;
 import com.example.meganoneill.nytimessearch.ArticleArrayAdapter;
 import com.example.meganoneill.nytimessearch.R;
 import com.example.meganoneill.nytimessearch.fragments.FilterFragment;
+import com.example.meganoneill.nytimessearch.models.Article;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -28,17 +26,27 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.util.TextUtils;
 
-public class SearchActivity extends AppCompatActivity{
-    EditText etQuery;
+public class SearchActivity extends AppCompatActivity implements FilterFragment.EditNameDialogListener{
     GridView gvResults;
-    Button btnSearch;
 
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
+
+    //values from fragment
+    String date;
+    String sort;
+    Boolean sports = false;
+    Boolean arts = false;
+    Boolean fashion = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,18 @@ public class SearchActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         setupViews();
     }
+
+    @Override
+    public void onFinishEditDialog(String the_date, String the_sort, Boolean bool_sports, Boolean bool_arts, Boolean bool_fashion) {
+        //Set options query string here?
+        date = the_date;
+        sort = the_sort;
+        sports = bool_sports;
+        arts = bool_arts;
+        fashion = bool_fashion;
+
+    }
+
 
     private void showFilterFragment() {
         FragmentManager fm = getSupportFragmentManager();
@@ -124,6 +144,7 @@ public class SearchActivity extends AppCompatActivity{
     }
 
     public void articleSearch(String query) {
+        ArrayList<String> subjects = new ArrayList<>();
 
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
@@ -132,6 +153,34 @@ public class SearchActivity extends AppCompatActivity{
         params.put("api-key", "69a1ad42e13c41f0a00cb881300e3ecd");
         params.put("page", 0);
         params.put("q", query);
+
+        if (!TextUtils.isBlank(sort)) {
+            params.put("sort", sort);
+        }
+
+        if (!TextUtils.isBlank(date)) {
+            ParsePosition pos = new ParsePosition(0);
+            Date new_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).parse(date, pos);
+            params.put("begin_date", new_date);
+        }
+
+        if (fashion == true){
+            subjects.add("Fashion & Style");
+        }
+
+        if(sports == true){
+            subjects.add("Sports");
+        }
+
+        if(arts == true){
+            subjects.add("Arts");
+        }
+
+        if(subjects.size() > 0){
+            params.put("fq", "news_desk:(\"" + android.text.TextUtils.join("\" \"", subjects.toArray()) + "\")");
+        }
+
+        Log.d("DEBUG", params.toString());
 
         client.get(url, params, new JsonHttpResponseHandler(){
             @Override
@@ -153,4 +202,5 @@ public class SearchActivity extends AppCompatActivity{
             }
         });
     }
+
 }

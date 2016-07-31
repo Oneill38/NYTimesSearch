@@ -7,7 +7,7 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.meganoneill.nytimessearch.Article;
+import com.example.meganoneill.nytimessearch.models.Article;
 import com.example.meganoneill.nytimessearch.R;
 
 public class ArticleActivity extends AppCompatActivity {
