@@ -7,8 +7,10 @@ import android.view.KeyEvent;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.example.meganoneill.nytimessearch.models.Article;
 import com.example.meganoneill.nytimessearch.R;
+import com.example.meganoneill.nytimessearch.models.Article;
+
+import org.parceler.Parcels;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -19,7 +21,7 @@ public class ArticleActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        final Article article = (Article) getIntent().getSerializableExtra("article");
+        final Article article = (Article) Parcels.unwrap(getIntent().getParcelableExtra("article"));
 
         WebView webview = (WebView) findViewById(R.id.wvArticle);
 
