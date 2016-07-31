@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class SearchActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity{
     EditText etQuery;
     GridView gvResults;
     Button btnSearch;

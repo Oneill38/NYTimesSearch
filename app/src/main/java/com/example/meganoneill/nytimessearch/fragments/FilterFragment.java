@@ -11,11 +11,14 @@ import android.widget.EditText;
 
 import com.example.meganoneill.nytimessearch.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 /**
  * Created by meganoneill on 7/27/16.
  */
 public class FilterFragment extends DialogFragment {
-    private EditText mEditText;
+    EditText date;
 
     public FilterFragment() {
         // Empty constructor is required for DialogFragment
@@ -35,6 +38,7 @@ public class FilterFragment extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_filters, container);
+
     }
 
     @Override
@@ -44,8 +48,24 @@ public class FilterFragment extends DialogFragment {
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
+        date = (EditText) view.findViewById(R.id.etStartDate);
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
+                newFragment.setTargetFragment(FilterFragment.this, 300);
+                newFragment.show(getFragmentManager(), "datePicker");
+            }
+        });
 
     }
+
+    public void setDate(Calendar c) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+        date.setText(format.format(c.getTime()));
+    }
+
+
 
 
 }
