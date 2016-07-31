@@ -1,21 +1,20 @@
 package com.example.meganoneill.nytimessearch.fragments;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.meganoneill.nytimessearch.R;
+import com.example.meganoneill.nytimessearch.models.SearchFilter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -23,49 +22,29 @@ import java.util.Calendar;
 /**
  * Created by meganoneill on 7/27/16.
  */
-public class FilterFragment extends DialogFragment implements TextView.OnEditorActionListener {
-    EditText date;
-    EditText save;
+public class FilterFragment extends DialogFragment{
     Spinner spinner;
+    OnFiltersAppliedListener theCallback;
+    TextView theDate;
+    String the_date;
 
-    public interface EditNameDialogListener {
-        void onFinishEditDialog(String inputText, String sort, Boolean sports, Boolean arts, Boolean fashion);
+    public interface OnFiltersAppliedListener {
+        public void onFiltersGiven(String date, String sort, Boolean arts, Boolean fashion, Boolean sports);
     }
 
-    //THIS IS WHERE WE WANT TO GET ALL VALUES
     @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (EditorInfo.IME_ACTION_DONE == actionId) {
-            Log.d("DEBUG", "Success CLick");
-            // Return input text back to activity through the implemented listener
-            EditNameDialogListener listener = (EditNameDialogListener) getActivity();
-            // Close the dialog and return back to the parent activity
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
-
-            date = (EditText) v.findViewById(R.id.etStartDate);
-            String the_date = date.getText().toString();
-
-            spinner = (Spinner) v.findViewById(R.id.spSort);
-            String sort = spinner.getSelectedItem().toString();
-
-            CheckBox checkFashion = (CheckBox) v.findViewById(R.id.cbFashion);
-            Boolean fashion = checkFashion.isChecked();
-
-            CheckBox checkArts = (CheckBox) v.findViewById(R.id.cbArts);
-            Boolean arts = checkArts.isChecked();
-
-            CheckBox checkSports = (CheckBox) v.findViewById(R.id.cbSports);
-            Boolean sports = checkSports.isChecked();
-
-            listener.onFinishEditDialog(the_date,  sort,  sports,  arts,  fashion);
-
-            dismiss();
-            return true;
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            theCallback = (OnFiltersAppliedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
         }
-        Log.d("DEBUG", Integer.toString(actionId));
-        return false;
     }
-
 
     public FilterFragment() {
         // Empty constructor is required for DialogFragment
@@ -73,11 +52,9 @@ public class FilterFragment extends DialogFragment implements TextView.OnEditorA
         // Use `newInstance` instead as shown below
     }
 
-    public static FilterFragment newInstance(String title) {
+    public static FilterFragment newInstance(SearchFilter searchFilter) {
         FilterFragment frag = new FilterFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        frag.setArguments(args);
+        frag.setArguments(searchFilter.toBundle());
         return frag;
     }
 
@@ -91,13 +68,12 @@ public class FilterFragment extends DialogFragment implements TextView.OnEditorA
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         getDialog().getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        save = (EditText) view.findViewById(R.id.btnFilter);
-        date = (EditText) view.findViewById(R.id.etStartDate);
-        date.setOnClickListener(new View.OnClickListener() {
+        Button save = (Button) view.findViewById(R.id.btnFilter);
+        theDate = (TextView) view.findViewById(R.id.etStartDate);
+        theDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
@@ -106,12 +82,37 @@ public class FilterFragment extends DialogFragment implements TextView.OnEditorA
             }
         });
 
-        save.setOnEditorActionListener(this);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendData(v);
+            }
+        });
+    }
+
+    public void sendData(View v){
+        TextView startDate = (TextView) getDialog().findViewById(R.id.etStartDate);
+        the_date = startDate.getText().toString();
+
+        spinner = (Spinner) getDialog().findViewById(R.id.spSort);
+        String sort = spinner.getSelectedItem().toString();
+
+        CheckBox checkFashion = (CheckBox) getDialog().findViewById(R.id.cbFashion);
+        Boolean fashion = checkFashion.isChecked();
+
+        CheckBox checkArts = (CheckBox) getDialog().findViewById(R.id.cbArts);
+        Boolean arts = checkArts.isChecked();
+
+        CheckBox checkSports = (CheckBox) getDialog().findViewById(R.id.cbSports);
+        Boolean sports = checkSports.isChecked();
+
+        theCallback.onFiltersGiven(the_date, sort, arts, fashion, sports);
+        getDialog().dismiss();
     }
 
     public void setDate(Calendar c) {
         SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
-        date.setText(format.format(c.getTime()));
+        theDate.setText(format.format(c.getTime()));
     }
 
 

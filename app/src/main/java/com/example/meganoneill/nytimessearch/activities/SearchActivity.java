@@ -35,7 +35,7 @@ import java.util.Locale;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.util.TextUtils;
 
-public class SearchActivity extends AppCompatActivity implements FilterFragment.EditNameDialogListener{
+public class SearchActivity extends AppCompatActivity implements FilterFragment.OnFiltersAppliedListener{
     GridView gvResults;
 
     ArrayList<Article> articles;
@@ -56,18 +56,6 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         setSupportActionBar(toolbar);
         setupViews();
     }
-
-    @Override
-    public void onFinishEditDialog(String the_date, String the_sort, Boolean bool_sports, Boolean bool_arts, Boolean bool_fashion) {
-        //Set options query string here?
-        date = the_date;
-        sort = the_sort;
-        sports = bool_sports;
-        arts = bool_arts;
-        fashion = bool_fashion;
-
-    }
-
 
     private void showFilterFragment() {
         FragmentManager fm = getSupportFragmentManager();
@@ -179,7 +167,7 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         if(subjects.size() > 0){
             params.put("fq", "news_desk:(\"" + android.text.TextUtils.join("\" \"", subjects.toArray()) + "\")");
         }
-
+        Log.d("Date", date);
         Log.d("DEBUG", params.toString());
 
         client.get(url, params, new JsonHttpResponseHandler(){
@@ -203,4 +191,13 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         });
     }
 
+    @Override
+    public void onFiltersGiven(String the_date, String the_sort, Boolean bool_arts, Boolean bool_fashion, Boolean bool_sports) {
+        //Set options query string here?
+        date = the_date;
+        sort = the_sort;
+        sports = bool_sports;
+        arts = bool_arts;
+        fashion = bool_fashion;
+    }
 }
