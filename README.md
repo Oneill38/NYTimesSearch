@@ -1,6 +1,6 @@
 **NYTimesSearch** is an android app that allows a user to search for articles on web using simple filters. The app utilizes [New York Times Search API](http://developer.nytimes.com/docs/read/article_search_api_v2).
 
-Time spent: **7** hours spent in total
+Time spent: **8** hours spent in total
 
 ## User Stories
 
@@ -42,3 +42,4 @@ The following **additional** features are implemented:
 * [x ] Used a placeholder vector for articles that don't have an image, to keep a consistent look.
 
 ## Video Walkthrough
+![alt tag](https://cloud.githubusercontent.com/assets/6576820/17279510/611c92c2-5743-11e6-9eea-318a89f49449.gif)
