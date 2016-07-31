@@ -1,4 +1,4 @@
-package com.example.meganoneill.nytimessearch;
+package com.example.meganoneill.nytimessearch.adapters;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.meganoneill.nytimessearch.R;
 import com.example.meganoneill.nytimessearch.models.Article;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class ArticleArrayAdapter extends ArrayAdapter<Article> {
 
         if(!TextUtils.isEmpty(thumbnail)){
             Glide.with(getContext()).load(thumbnail).into(imageView);
+        }else{
+            imageView.setImageResource(R.drawable.ic_crop_original_black_24dp);
         }
 
         return convertView;

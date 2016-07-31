@@ -22,7 +22,7 @@ The following **optional** features are implemented:
 * [x ] Used the **ActionBar SearchView** or custom layout as the query box instead of an EditText
 * [x ] User can **share an article link** to their friends or email it to themselves
 * [x ] Replaced Filter Settings Activity with a lightweight modal overlay
-* [ ] Improved the user interface and experiment with image assets and/or styling and coloring
+* [x ] Improved the user interface and experiment with image assets and/or styling and coloring
 
 The following **bonus** features are implemented:
 
@@ -39,6 +39,6 @@ The following **bonus** features are implemented:
 
 The following **additional** features are implemented:
 
-* [ ] List anything else that you can get done to improve the app functionality!
+* [x ] Used a placeholder vector for articles that don't have an image, to keep a consistent look.
 
 ## Video Walkthrough

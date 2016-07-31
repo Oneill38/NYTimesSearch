@@ -1,4 +1,4 @@
-package com.example.meganoneill.nytimessearch;
+package com.example.meganoneill.nytimessearch.listeners;
 
 import android.widget.AbsListView;
 import android.widget.GridView;

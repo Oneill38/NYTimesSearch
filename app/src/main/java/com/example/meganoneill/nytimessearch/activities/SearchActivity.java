@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.example.meganoneill.nytimessearch.ArticleArrayAdapter;
-import com.example.meganoneill.nytimessearch.EndlessScrollListener;
+import com.example.meganoneill.nytimessearch.adapters.ArticleArrayAdapter;
+import com.example.meganoneill.nytimessearch.listeners.EndlessScrollListener;
 import com.example.meganoneill.nytimessearch.R;
 import com.example.meganoneill.nytimessearch.fragments.FilterFragment;
 import com.example.meganoneill.nytimessearch.models.Article;
