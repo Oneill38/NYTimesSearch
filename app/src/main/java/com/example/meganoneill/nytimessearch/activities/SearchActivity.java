@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.example.meganoneill.nytimessearch.ArticleArrayAdapter;
+import com.example.meganoneill.nytimessearch.EndlessScrollListener;
 import com.example.meganoneill.nytimessearch.R;
 import com.example.meganoneill.nytimessearch.fragments.FilterFragment;
 import com.example.meganoneill.nytimessearch.models.Article;
@@ -37,6 +38,8 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
     ArrayList<Article> articles;
     ArticleArrayAdapter adapter;
 
+    String query;
+
     //values from fragment
     String date;
     String sort;
@@ -51,6 +54,17 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setupViews();
+
+        gvResults = (GridView) findViewById(R.id.gvResults);
+        gvResults.setOnScrollListener(new EndlessScrollListener() {
+            @Override
+            public boolean onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                articleSearch(query,page);
+                return true;
+            }
+        });
     }
 
     private void showFilterFragment() {
@@ -90,7 +104,7 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Fetch the data remotely
-                articleSearch(query);
+                articleSearch(query, 0);
                 // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
                 // see https://code.google.com/p/android/issues/detail?id=24599
                 searchView.clearFocus();
@@ -127,16 +141,17 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         return super.onOptionsItemSelected(item);
     }
 
-    public void articleSearch(String query) {
+    public void articleSearch(String q, int page) {
         ArrayList<String> subjects = new ArrayList<>();
+        query = q;
 
         AsyncHttpClient client = new AsyncHttpClient();
         String url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
 
         RequestParams params = new RequestParams();
         params.put("api-key", "69a1ad42e13c41f0a00cb881300e3ecd");
-        params.put("page", 0);
-        params.put("q", query);
+        params.put("page", page);
+        params.put("q", q);
 
         if (!TextUtils.isBlank(sort)) {
             params.put("sort", sort);
