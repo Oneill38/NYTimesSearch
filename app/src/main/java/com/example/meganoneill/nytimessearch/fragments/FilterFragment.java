@@ -111,7 +111,7 @@ public class FilterFragment extends DialogFragment{
     }
 
     public void setDate(Calendar c) {
-        SimpleDateFormat format = new SimpleDateFormat("yy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         theDate.setText(format.format(c.getTime()));
     }
 

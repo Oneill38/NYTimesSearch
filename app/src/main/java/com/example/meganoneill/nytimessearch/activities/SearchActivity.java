@@ -26,11 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.util.TextUtils;
@@ -147,9 +143,7 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         }
 
         if (!TextUtils.isBlank(date)) {
-            ParsePosition pos = new ParsePosition(0);
-            Date new_date = new SimpleDateFormat("dd MMM yyyy", Locale.ENGLISH).parse(date, pos);
-            params.put("begin_date", new_date);
+            params.put("begin_date", date);
         }
 
         if (fashion == true){
@@ -167,7 +161,6 @@ public class SearchActivity extends AppCompatActivity implements FilterFragment.
         if(subjects.size() > 0){
             params.put("fq", "news_desk:(\"" + android.text.TextUtils.join("\" \"", subjects.toArray()) + "\")");
         }
-        Log.d("Date", date);
         Log.d("DEBUG", params.toString());
 
         client.get(url, params, new JsonHttpResponseHandler(){
